@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: anonym-space-app
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    buildCommand: pip install -r backend/requirements.txt && python backend/manage.py collectstatic --noinput && python backend/manage.py migrate
+    startCommand: cd backend && gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    envVars:
+      - key: DATABASE_URL
+        sync: false # Render'da PostgreSQL qo'shgandan so'ng URL'ni kiritasiz.
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "anonym-space-app.onrender.com"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://anonym-space-app.onrender.com"

@@ -14,3 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Loyiha fayllarini ko'chiramiz
 COPY . /code/
+
+# 8000-portni ochamiz
+EXPOSE 8000
+
+# Serverni Gunicorn orqali yurgizamiz
+CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
