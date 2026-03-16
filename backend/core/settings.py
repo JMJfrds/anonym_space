@@ -18,8 +18,11 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-fallback-key-for-dev-onl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env.list('CSRF_TRUSTED_ORIGINS', default=[])]
+raw_hosts = env.str('ALLOWED_HOSTS', default='*')
+ALLOWED_HOSTS = [host.strip() for host in raw_hosts.split(',')] if raw_hosts else ['*']
+
+raw_origins = env.str('CSRF_TRUSTED_ORIGINS', default='')
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in raw_origins.split(',')] if raw_origins else []
 
 # Render proxy sozlamalari
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
