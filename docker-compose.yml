@@ -9,7 +9,7 @@ services:
       - .env
 
   web:
-    build: ./backend
+    build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/code

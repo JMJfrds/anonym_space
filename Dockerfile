@@ -9,11 +9,11 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /code
 
 # Kutubxonalarni o'rnatamiz
-COPY requirements.txt /code/
+COPY backend/requirements.txt /code/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Loyiha fayllarini ko'chiramiz
-COPY . /code/
+COPY backend/ /code/
 
 # 8000-portni ochamiz
 EXPOSE 8000
