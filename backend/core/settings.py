@@ -21,7 +21,7 @@ DEBUG = env.bool('DEBUG', default=False)
 ALLOWED_HOSTS = [host.strip() for host in env.list('ALLOWED_HOSTS', default=['*'])]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env.list('CSRF_TRUSTED_ORIGINS', default=[])]
 
-USE_X_FORWARDED_HOST = True
+# Render proxy sozlamalari
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
@@ -105,7 +105,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# CompressedStaticFilesStorage - .map fayllarni tekshirmaydi
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
