@@ -83,8 +83,10 @@ def telegram_login_callback(request):
     username = url_params.get('username', f'tg_user_{telegram_id}')
     
     # Baza dan qidiramiz yoki yaratamiz
+    # CustomUser (accounts.User) da 'username' yo'q, email ishlatamiz
+    email = f"{telegram_id}@telegram.local"
     user, created = User.objects.get_or_create(
-        username=username,
+        email=email,
         defaults={
             'first_name': first_name,
             'last_name': last_name,
