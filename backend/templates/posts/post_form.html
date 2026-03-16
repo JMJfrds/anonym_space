@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl">
+    <h2 class="text-2xl font-bold mb-6 text-indigo-400">Yangi post yaratish</h2>
+    
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        
+        <div>
+            <label class="block text-sm font-medium text-slate-400 mb-2">Post turi</label>
+            <select name="post_type" id="post_type" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none">
+                <option value="normal">Oddiy savol</option>
+                <option value="personal">Shaxsiy savol (Anonim)</option>
+                <option value="learning">O‘rganish posti (Kino/Kitob)</option>
+                <option value="thought">Fikr posti</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-slate-400 mb-2">Sizning fikringiz / savolingiz</label>
+            <textarea name="content" rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Nimadir yozing..."></textarea>
+        </div>
+
+        <div id="learning_fields" class="hidden space-y-4 p-4 bg-slate-900/50 rounded-lg border border-indigo-500/20">
+            <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1">Manba nomi</label>
+                <input type="text" name="source_name" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 outline-none" placeholder="Masalan: Aybdor filmi">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1">O'rgangan xulosangiz (Teoriya)</label>
+                <textarea name="lesson" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 outline-none" placeholder="Masalan: Baxtsizlar bir-birini tushunadi"></textarea>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" name="is_anonymous" id="is_anonymous" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-indigo-600 focus:ring-indigo-500">
+            <label for="is_anonymous" class="text-sm text-slate-400">Anonim tarzda e'lon qilish</label>
+        </div>
+
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg transition-all transform hover:scale-[1.02]">
+            E'lon qilish
+        </button>
+    </form>
+</div>
+
+<script>
+    // Learning post tanlanganda qo'shimcha maydonlarni ko'rsatish
+    const postTypeSelect = document.getElementById('post_type');
+    const learningFields = document.getElementById('learning_fields');
+
+    postTypeSelect.addEventListener('change', (e) => {
+        if (e.target.value === 'learning') {
+            learningFields.classList.remove('hidden');
+        } else {
+            learningFields.classList.add('hidden');
+        }
+    });
+</script>
+{% endblock %}

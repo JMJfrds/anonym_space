@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto flex flex-col h-[80vh] bg-slate-900 rounded-2xl shadow-2xl border border-slate-700">
+    <div class="p-4 border-b border-slate-700 flex items-center bg-slate-800/50 rounded-t-2xl">
+        <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold">
+            {{ recipient.nickname|slice:":1" }}
+        </div>
+        <div class="ml-3">
+            <h3 class="font-bold text-slate-200">{{ recipient.nickname }}</h3>
+            <span class="text-xs text-green-400">online</span>
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chat-box">
+        {% for msg in chat_messages %}
+            <div class="flex {% if msg.sender == request.user %}justify-end{% else %}justify-start{% endif %}">
+                <div class="max-w-[75%] p-3 rounded-2xl {% if msg.sender == request.user %}bg-indigo-600 text-white rounded-tr-none{% else %}bg-slate-700 text-slate-200 rounded-tl-none{% endif %} shadow-md">
+                    <p class="text-sm">{{ msg.text }}</p>
+                    <span class="text-[10px] opacity-70 block mt-1 text-right">{{ msg.created_at|date:"H:i" }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="p-4 bg-slate-800/50 border-t border-slate-700 rounded-b-2xl">
+        {% if has_replied_today %}
+            <form method="POST" class="flex gap-2">
+                {% csrf_token %}
+                <input type="text" name="text" placeholder="Xabar yozing..." class="flex-1 bg-slate-700 border-none rounded-xl px-4 text-slate-200 focus:ring-2 focus:ring-indigo-500">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 p-3 rounded-xl transition">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </button>
+            </form>
+        {% else %}
+            <div class="text-center p-2 bg-red-900/20 border border-red-900/50 rounded-xl text-red-400 text-sm">
+                Xabar yuborish uchun bugun kamida bitta postga javob yozishingiz kerak!
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Chatni doim eng pastga tushirib qo'yish
+    var chatBox = document.getElementById("chat-box");
+    chatBox.scrollTop = chatBox.scrollHeight;
+</script>
+{% endblock %}

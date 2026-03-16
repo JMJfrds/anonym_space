@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonym Space</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Silliq scroll va dizayn uchun qo'shimcha */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen font-sans">
+
+    <nav class="border-b border-slate-800 p-4 sticky top-0 bg-[#0f172a]/90 backdrop-blur-md z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+
+            <a href="{% url 'home' %}" class="text-2xl font-black tracking-tighter text-indigo-500 hover:text-indigo-400 transition-colors">
+                ANONYM.SPACE
+            </a>
+
+            <div class="flex items-center gap-4 md:gap-6">
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'chat_list' %}" class="relative group p-2 rounded-full hover:bg-slate-800 transition-all">
+                        <svg class="w-6 h-6 text-slate-400 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+
+                        {% if unread_count > 0 %}
+                            <span class="absolute top-0 right-0 flex h-4 w-4">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-4 w-4 bg-red-600 text-[10px] font-bold items-center justify-center text-white">
+                                    {{ unread_count }}
+                                </span>
+                            </span>
+                        {% endif %}
+                    </a>
+
+                    <div class="hidden md:flex flex-col items-end leading-none">
+                        <a href="{% url 'profile' %}" class="text-sm font-bold text-slate-200 hover:text-indigo-400 transition">
+                            @{{ user.nickname }}
+                        </a>
+                        <span class="text-[10px] text-indigo-500 font-black tracking-widest mt-1 uppercase">
+                            {{ user.points }} PTS
+                        </span>
+                    </div>
+
+                    <a href="{% url 'post_create' %}" class="bg-indigo-600 px-4 py-2 rounded-xl text-sm font-bold hover:bg-indigo-500 hover:shadow-[0_0_15px_rgba(79,70,229,0.4)] transition-all active:scale-95">
+                        + POST
+                    </a>
+
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-sm font-bold text-indigo-400 hover:underline">Kirish</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-6">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="mt-auto border-t border-slate-800 p-8 text-center text-slate-600 text-xs">
+        <p>&copy; 2026 Anonym Space. Hamma huquqlar himoyalangan.</p>
+    </footer>
+
+</body>
+</html>

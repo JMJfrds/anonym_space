@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl mt-10">
+    <h2 class="text-3xl font-bold mb-6 text-center text-indigo-400 italic">Qo'shilish</h2>
+    
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ field.errors.0 }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg transition-all mt-4">
+            Ro'yxatdan o'tish
+        </button>
+    </form>
+    
+    <div class="mt-6 text-center border-t border-slate-700 pt-4">
+        <p class="text-slate-400 text-sm">Profilingiz bormi? <a href="/admin" class="text-indigo-400 hover:underline">Kirish</a></p>
+    </div>
+</div>
+
+<style>
+    /* Formadagi inputlarni chiroyli qilish */
+    input {
+        width: 100%;
+        background-color: #0f172a !important;
+        border: 1px solid #334155 !important;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        color: white;
+        outline: none;
+    }
+    input:focus { border-color: #6366f1 !important; }
+</style>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-6xl mx-auto flex h-[85vh] bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
+    
+    <div class="w-1/3 border-r border-slate-700 flex flex-col bg-slate-800/30">
+        <div class="p-4 border-b border-slate-700">
+            <form method="GET" action="{% url 'chat_list' %}" class="relative">
+                <input type="text" name="search" placeholder="Suhbatdosh qidirish..." 
+                       class="w-full bg-slate-900 border-none rounded-xl py-2 px-4 text-sm text-slate-200 focus:ring-2 focus:ring-indigo-500">
+            </form>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto">
+            {% for user in all_users %}
+            <a href="{% url 'chat_room' user.id %}" 
+               class="flex items-center p-4 hover:bg-slate-700/50 transition border-b border-slate-700/50 {% if recipient.id == user.id %}bg-indigo-900/30 border-r-4 border-r-indigo-500{% endif %}">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-bold text-white">
+                    {{ user.nickname|slice:":1" }}
+                </div>
+                <div class="ml-3 overflow-hidden">
+                    <p class="text-sm font-semibold text-slate-200 truncate">@{{ user.nickname }}</p>
+                    <p class="text-xs text-slate-500 truncate">Suhbatni boshlash...</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="flex-1 flex flex-col bg-slate-900/50">
+        {% if recipient %}
+            <div class="p-4 border-b border-slate-700 flex items-center justify-between bg-slate-800/20">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-xs font-bold">{{ recipient.nickname|slice:":1" }}</div>
+                    <h3 class="ml-3 font-bold text-slate-200">@{{ recipient.nickname }}</h3>
+                </div>
+            </div>
+
+            <div id="chat-box" class="flex-1 overflow-y-auto p-6 space-y-4 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+                {% for msg in chat_messages %}
+                <div class="flex {% if msg.sender == request.user %}justify-end{% else %}justify-start{% endif %}">
+                    <div class="max-w-[70%] p-3 rounded-2xl shadow-sm {% if msg.sender == request.user %}bg-indigo-600 text-white rounded-tr-none{% else %}bg-slate-800 text-slate-200 rounded-tl-none border border-slate-700{% endif %}">
+                        <p class="text-sm leading-relaxed">{{ msg.text }}</p>
+                        <span class="text-[10px] opacity-60 block mt-1 text-right">{{ msg.created_at|date:"H:i" }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="p-4 bg-slate-800/40 border-t border-slate-700">
+                {% if has_replied_today %}
+                <form method="POST" action="{% url 'chat_room' recipient.id %}" class="flex gap-3">
+                    {% csrf_token %}
+                    <input type="text" name="text" autocomplete="off" placeholder="Xabar yozing..." 
+                           class="flex-1 bg-slate-900 border-none rounded-2xl px-5 py-3 text-sm text-slate-200 focus:ring-2 focus:ring-indigo-500">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white p-3 rounded-2xl transition-all hover:scale-105">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                    </button>
+                </form>
+                {% else %}
+                <div class="bg-red-900/20 border border-red-900/50 p-3 rounded-xl text-red-400 text-xs text-center">
+                    ⚠️ Xabar yuborish uchun bugun kamida bitta postga javob yozgan bo'lishingiz kerak!
+                </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="flex-1 flex flex-col items-center justify-center text-slate-500">
+                <svg class="w-20 h-20 opacity-20 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                <p class="text-lg">Suhbatlashish uchun chapdan odam tanlang</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const objDiv = document.getElementById("chat-box");
+    if(objDiv) objDiv.scrollTop = objDiv.scrollHeight;
+  // Har 5 soniyada sahifani yangilab turish (faqat chat ochiq bo'lsa)
+  {% if recipient %}
+      setTimeout(function(){
+         window.location.reload(1);
+      }, 5000);
+  {% endif %}
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl mt-10">
+    <h2 class="text-3xl font-bold mb-6 text-center text-indigo-400">Kirish</h2>
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg mt-4">Kirish</button>
+    </form>
+    <p class="mt-4 text-center text-slate-400 text-sm">
+        Accountingiz yo'qmi? <a href="{% url 'register' %}" class="text-indigo-400">Ro'yxatdan o'tish</a>
+    </p>
+</div>
+
+<style>
+    input { width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 0.5rem; padding: 0.75rem; color: white; margin-bottom: 1rem; }
+</style>
+{% endblock %}
