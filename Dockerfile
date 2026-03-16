@@ -15,8 +15,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Loyiha fayllarini ko'chiramiz
 COPY backend/ /code/
 
+# Statik fayllar uchun papka yaratamiz
+RUN mkdir -p /code/staticfiles
+
+# start.sh ga ruxsat beramiz
+RUN chmod +x /code/start.sh
+
 # 8000-portni ochamiz
 EXPOSE 8000
 
-# Serverni Gunicorn orqali yurgizamiz
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Serverni start.sh orqali yurgizamiz
+CMD ["/code/start.sh"]
