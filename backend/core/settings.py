@@ -177,3 +177,34 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# Ijtimoiy tarmoqlar provayderlari
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': env('GOOGLE_CLIENT_ID', default=''),
+            'secret': env('GOOGLE_CLIENT_SECRET', default=''),
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    },
+    'github': {
+        'APP': {
+            'client_id': env('GITHUB_CLIENT_ID', default=''),
+            'secret': env('GITHUB_CLIENT_SECRET', default=''),
+            'key': ''
+        }
+    },
+    'telegram': {
+        'APP': {
+            'client_id': env('TELEGRAM_BOT_TOKEN', default=''),
+            'secret': env('TELEGRAM_BOT_TOKEN', default=''),
+        }
+    }
+}
