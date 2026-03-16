@@ -18,8 +18,8 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-fallback-key-for-dev-onl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
+ALLOWED_HOSTS = [host.strip() for host in env.list('ALLOWED_HOSTS', default=['*'])]
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env.list('CSRF_TRUSTED_ORIGINS', default=[])]
 
 
 # Application definition
