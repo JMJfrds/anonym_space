@@ -21,6 +21,9 @@ DEBUG = env.bool('DEBUG', default=False)
 ALLOWED_HOSTS = [host.strip() for host in env.list('ALLOWED_HOSTS', default=['*'])]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env.list('CSRF_TRUSTED_ORIGINS', default=[])]
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
