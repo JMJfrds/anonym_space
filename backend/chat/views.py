@@ -35,6 +35,8 @@ def chat_dashboard(request, user_id=None):
                 )
                 # Xabar ketgandan keyin sahifani yangilab, xabarni ko'rsatamiz
                 return redirect('chat_room', user_id=user_id)
+            elif text and not has_replied:
+                messages.error(request, "Bugun biron bir postga javob yozmaguningizcha chatdan foydalana olmaysiz!")
 
         # Xabarlar tarixini olish
         messages = Message.objects.filter(
